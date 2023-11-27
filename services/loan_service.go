@@ -27,6 +27,8 @@ func CreateLoan(c echo.Context) error {
 
 	fmt.Println(loan)
 
+	// grpc customer service
+
 	if err := c.Bind(&loan); err != nil {
 		return err
 	}
