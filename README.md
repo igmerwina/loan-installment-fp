@@ -1,3 +1,3 @@
-# Loan & Service Installment 
+# Loan & Installment Service
 
 ### Final Project K3 

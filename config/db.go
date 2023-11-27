@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goloan/model"
 
+	env "github.com/spf13/viper"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -19,11 +20,11 @@ func Connect() {
 	}
 
 	var (
-		host     = "localhost"
-		port     = 5432
-		user     = "postgres"
-		password = "postgres"
-		dbname   = "golang"
+		host     = env.Get("DB_HOST")
+		port     = env.GetInt("DB_PORT")
+		user     = env.Get("DB_USER")
+		password = env.Get("DB_PASSWORD")
+		dbname   = env.Get("DB_NAME")
 	)
 
 	psqlInfo := fmt.Sprintf(`
