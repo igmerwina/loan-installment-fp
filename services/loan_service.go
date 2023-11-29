@@ -5,6 +5,7 @@ import (
 	"goloan/config"
 	"goloan/model"
 	"goloan/util"
+	"log"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -22,6 +23,8 @@ func GetAllLoan(c echo.Context) error {
 }
 
 func GetDetailLoan(c echo.Context) error {
+	fmt.Println("GetDetailLoan")
+
 	db := config.GetDB()
 
 	var loan model.Loan
@@ -32,9 +35,13 @@ func GetDetailLoan(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, map[string]string{"error": "User not found"})
 	}
 
-	fmt.Println("GetAllLoan")
+	resp := model.Response{
+		ResponseCode: config.Success,
+		ResponseDesc: config.MessageResponse(config.Success),
+		Data:         result,
+	}
 
-	return c.JSON(http.StatusOK, loan)
+	return c.JSON(http.StatusOK, resp)
 }
 
 func CreateLoan(c echo.Context) error {
@@ -50,11 +57,18 @@ func CreateLoan(c echo.Context) error {
 
 	db.Debug().Save(&loan)
 
+	resp := model.Response{
+		ResponseCode: config.Success,
+		ResponseDesc: config.MessageResponse(config.Success),
+		Data:         loan,
+	}
+
 	fmt.Println("CreateLoan")
-	return c.JSON(http.StatusOK, loan)
+	return c.JSON(http.StatusOK, resp)
 }
 
 func UpdateLoan(c echo.Context) error {
+	log.Println("UpdateLoan")
 	db := config.GetDB()
 
 	id := c.Param("Id")
@@ -69,20 +83,26 @@ func UpdateLoan(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid input"})
 	}
 
-	fmt.Println("UpdateLoan")
-
 	db.Model(&loan).Updates(&updatedLoan)
-	return c.JSON(http.StatusOK, loan)
+
+	resp := model.Response{
+		ResponseCode: config.Success,
+		ResponseDesc: config.MessageResponse(config.Success),
+		Data:         loan,
+	}
+
+	return c.JSON(http.StatusOK, resp)
 }
 
+/* unused
 func DeleteLoan(c echo.Context) error {
 	db := config.GetDB()
 
 	loan := model.Loan{}
 
 	delResp := model.Response{
-		Status:  http.StatusOK,
-		Message: "Delete Data Success",
+		ResponseCode: config.Success,
+		Message:      "Delete Data Success",
 	}
 
 	if err := c.Bind(&loan); err != nil {
@@ -102,3 +122,4 @@ func DeleteLoan(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, delResp)
 }
+*/

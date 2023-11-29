@@ -35,5 +35,11 @@ func GetHistInstallment(c echo.Context) error {
 
 	fmt.Println("GetHistInstallment", installment)
 
-	return c.JSON(http.StatusOK, installment)
+	resp := model.Response{
+		ResponseCode: config.Success,
+		ResponseDesc: config.MessageResponse(config.Success),
+		Data:         installment,
+	}
+
+	return c.JSON(http.StatusOK, resp)
 }
