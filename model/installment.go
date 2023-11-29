@@ -7,5 +7,5 @@ type Installment struct {
 	UserID    int64     `json:"user_id"`
 	LoanID    int64     `json:"loan_id"`
 	Nominal   int64     `json:"nominal"`
-	PaymentAt time.Time `json:"payment_at"`
+	PaymentAt time.Time `json:"payment_at,omitempty"`
 }

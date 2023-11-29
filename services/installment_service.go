@@ -21,71 +21,19 @@ func GetAllInstallment(c echo.Context) error {
 	return c.JSON(http.StatusOK, installments)
 }
 
-// CreateInstallment creates a new installment
-func CreateInstallment(c echo.Context) error {
+// GetAllInstallment retrieves all installments
+func GetHistInstallment(c echo.Context) error {
 	db := config.GetDB()
 
-	installment := model.Installment{}
+	userId := c.Param("userId")
 
-	fmt.Println(installment)
+	var installment []model.Installment
 
-	if err := c.Bind(&installment); err != nil {
-		return err
+	if err := db.Where("user_id = ?", userId).Find(&installment).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "User not found"})
 	}
 
-	db.Debug().Create(&installment)
+	fmt.Println("GetHistInstallment", installment)
 
-	fmt.Println("CreateInstallment")
 	return c.JSON(http.StatusOK, installment)
-}
-
-// UpdateInstallment updates an existing installment
-func UpdateInstallment(c echo.Context) error {
-	db := config.GetDB()
-
-	id := c.Param("installmentId")
-
-	var installment model.Installment
-	if err := db.First(&installment, id).Error; err != nil {
-		return c.JSON(http.StatusNotFound, map[string]string{"error": "Installment not found"})
-	}
-
-	var updatedInstallment model.Installment
-	if err := c.Bind(&updatedInstallment); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid input"})
-	}
-
-	fmt.Println("UpdateInstallment")
-
-	db.Model(&installment).Updates(&updatedInstallment)
-	return c.JSON(http.StatusOK, installment)
-}
-
-// DeleteInstallment deletes an installment
-func DeleteInstallment(c echo.Context) error {
-	db := config.GetDB()
-
-	installment := model.Installment{}
-
-	delResp := model.Response{
-		Status:  http.StatusOK,
-		Message: "Delete Data Success",
-	}
-
-	if err := c.Bind(&installment); err != nil {
-		return err
-	}
-
-	paramID := c.Param("installmentId")
-
-	// Then delete the installment
-	if err := db.Delete(&model.Installment{}, paramID).Error; err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{"error": err.Error()})
-	}
-
-	db.Model(&installment).Where("installment_id = ?", paramID).Delete(&installment)
-
-	fmt.Println("DeleteInstallment")
-
-	return c.JSON(http.StatusOK, delResp)
 }
