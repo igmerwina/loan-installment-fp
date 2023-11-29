@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"goloan/config"
 	"goloan/model"
+	"goloan/util"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -41,11 +42,11 @@ func CreateLoan(c echo.Context) error {
 
 	loan := model.Loan{}
 
-	fmt.Println(loan)
-
 	if err := c.Bind(&loan); err != nil {
 		return err
 	}
+
+	util.GenerateInstallment(&loan)
 
 	db.Debug().Save(&loan)
 

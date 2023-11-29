@@ -15,7 +15,6 @@ func main() {
 	e := echo.New()
 
 	cust := e.Group("/customer")
-
 	cust.POST("/create-loan", services.CreateLoan)
 	cust.PUT("/update/:Id", services.UpdateLoan)
 	cust.GET("/detail-loan/:userId", services.GetDetailLoan)
