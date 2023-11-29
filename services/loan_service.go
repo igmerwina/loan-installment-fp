@@ -9,11 +9,9 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-var (
-	db = config.GetDB()
-)
-
 func GetAllLoan(c echo.Context) error {
+	db := config.GetDB()
+
 	var loan []model.Loan
 	db.Find(&loan)
 
@@ -23,23 +21,25 @@ func GetAllLoan(c echo.Context) error {
 }
 
 func CreateLoan(c echo.Context) error {
+	db := config.GetDB()
+
 	loan := model.Loan{}
 
 	fmt.Println(loan)
-
-	// grpc customer service
 
 	if err := c.Bind(&loan); err != nil {
 		return err
 	}
 
-	db.Debug().Create(&loan)
+	db.Debug().Save(&loan)
 
 	fmt.Println("CreateLoan")
 	return c.JSON(http.StatusOK, loan)
 }
 
 func UpdateLoan(c echo.Context) error {
+	db := config.GetDB()
+
 	id := c.Param("orderId")
 
 	var loan model.Loan
@@ -59,6 +59,8 @@ func UpdateLoan(c echo.Context) error {
 }
 
 func DeleteLoan(c echo.Context) error {
+	db := config.GetDB()
+
 	loan := model.Loan{}
 
 	delResp := model.Response{

@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"goloan/config"
 	"goloan/model"
 	"net/http"
 
@@ -10,6 +11,8 @@ import (
 
 // GetAllInstallment retrieves all installments
 func GetAllInstallment(c echo.Context) error {
+	db := config.GetDB()
+
 	var installments []model.Installment
 	db.Find(&installments)
 
@@ -20,6 +23,8 @@ func GetAllInstallment(c echo.Context) error {
 
 // CreateInstallment creates a new installment
 func CreateInstallment(c echo.Context) error {
+	db := config.GetDB()
+
 	installment := model.Installment{}
 
 	fmt.Println(installment)
@@ -36,6 +41,8 @@ func CreateInstallment(c echo.Context) error {
 
 // UpdateInstallment updates an existing installment
 func UpdateInstallment(c echo.Context) error {
+	db := config.GetDB()
+
 	id := c.Param("installmentId")
 
 	var installment model.Installment
@@ -56,6 +63,8 @@ func UpdateInstallment(c echo.Context) error {
 
 // DeleteInstallment deletes an installment
 func DeleteInstallment(c echo.Context) error {
+	db := config.GetDB()
+
 	installment := model.Installment{}
 
 	delResp := model.Response{
