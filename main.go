@@ -5,13 +5,10 @@ import (
 	"goloan/services"
 
 	"github.com/labstack/echo/v4"
-	"github.com/spf13/viper"
-	env "github.com/spf13/viper"
 )
 
 func main() {
-	env.SetConfigFile(".env")
-	env.ReadInConfig()
+	env := config.New().SetArgs()
 
 	config.Connect()
 
@@ -26,5 +23,5 @@ func main() {
 	cust.GET("/create-installment", services.CreateInstallment)
 	cust.GET("/history-instalment", services.GetAllInstallment)
 
-	e.Logger.Fatal(e.Start(":" + viper.GetString("PORT")))
+	e.Logger.Fatal(e.Start(":" + env.AppsPort))
 }
