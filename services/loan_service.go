@@ -20,6 +20,22 @@ func GetAllLoan(c echo.Context) error {
 	return c.JSON(http.StatusOK, loan)
 }
 
+func GetDetailLoan(c echo.Context) error {
+	db := config.GetDB()
+
+	var loan model.Loan
+
+	userId := c.Param("userId")
+	result := db.Where("user_id = ?", userId).First(&loan)
+	if result.Error != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "User not found"})
+	}
+
+	fmt.Println("GetAllLoan")
+
+	return c.JSON(http.StatusOK, loan)
+}
+
 func CreateLoan(c echo.Context) error {
 	db := config.GetDB()
 
@@ -40,7 +56,7 @@ func CreateLoan(c echo.Context) error {
 func UpdateLoan(c echo.Context) error {
 	db := config.GetDB()
 
-	id := c.Param("orderId")
+	id := c.Param("Id")
 
 	var loan model.Loan
 	if err := db.First(&loan, id).Error; err != nil {
