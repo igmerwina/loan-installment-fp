@@ -1,0 +1,195 @@
+definitions:
+  model.Installment:
+    properties:
+      id:
+        type: integer
+      loan_id:
+        type: integer
+      nominal:
+        type: integer
+      payment_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  model.Loan:
+    properties:
+      cost_installment:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      item:
+        type: string
+      nominal:
+        type: integer
+      paid:
+        type: integer
+      period_installment:
+        type: integer
+      remain_installment:
+        type: integer
+      status_loan:
+        type: string
+      user_id:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /admin-installment:
+    get:
+      consumes:
+      - application/json
+      description: GetAdminInstallment
+      parameters:
+      - description: installment
+        in: body
+        name: model.Installment
+        required: true
+        schema:
+          $ref: '#/definitions/model.Installment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Installment'
+      summary: GetAdminInstallment
+      tags:
+      - admin
+  /all-installment:
+    get:
+      consumes:
+      - application/json
+      description: GetAllInstallment
+      parameters:
+      - description: installment
+        in: body
+        name: model.Installment
+        required: true
+        schema:
+          $ref: '#/definitions/model.Installment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Installment'
+      summary: GetAllInstallment
+      tags:
+      - installment
+  /all-loan:
+    get:
+      consumes:
+      - application/json
+      description: GetAllLoan
+      parameters:
+      - description: Loan
+        in: body
+        name: model.Loan
+        required: true
+        schema:
+          $ref: '#/definitions/model.Loan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Loan'
+      summary: GetAllLoan
+      tags:
+      - loan
+  /create-loan:
+    post:
+      consumes:
+      - application/json
+      description: Create Loan
+      parameters:
+      - description: Loan
+        in: body
+        name: model.Loan
+        required: true
+        schema:
+          $ref: '#/definitions/model.Loan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Loan'
+      summary: Create Loan
+      tags:
+      - loan
+  /detail-loan/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: GetDetailLoan
+      parameters:
+      - description: Loan
+        in: body
+        name: model.Loan
+        required: true
+        schema:
+          $ref: '#/definitions/model.Loan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Loan'
+      summary: GetDetailLoan
+      tags:
+      - loan
+  /history-instalment/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: GetHistInstallment
+      parameters:
+      - description: installment
+        in: body
+        name: model.Installment
+        required: true
+        schema:
+          $ref: '#/definitions/model.Installment'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Installment'
+      summary: GetHistInstallment
+      tags:
+      - installment
+  /update/{Id}:
+    put:
+      consumes:
+      - application/json
+      description: Update Loan
+      parameters:
+      - description: Loan
+        in: body
+        name: model.Loan
+        required: true
+        schema:
+          $ref: '#/definitions/model.Loan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Loan'
+      summary: Update Loan
+      tags:
+      - loan
+swagger: "2.0"

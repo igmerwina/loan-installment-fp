@@ -10,6 +10,15 @@ import (
 )
 
 // GetAllInstallment retrieves all installments
+// CreateEmployee Godoc
+// @Summary GetAllInstallment
+// @Description GetAllInstallment
+// @Tags installment
+// @Accept  json
+// @Produce  json
+// @Param model.Installment body model.Installment true "installment"
+// @Success 200 {object} model.Installment
+// @Router /all-installment [get]
 func GetAllInstallment(c echo.Context) error {
 	db := config.GetDB()
 
@@ -22,6 +31,15 @@ func GetAllInstallment(c echo.Context) error {
 }
 
 // GetAllInstallment retrieves all installments
+// CreateEmployee Godoc
+// @Summary GetHistInstallment
+// @Description GetHistInstallment
+// @Tags installment
+// @Accept  json
+// @Produce  json
+// @Param model.Installment body model.Installment true "installment"
+// @Success 200 {object} model.Installment
+// @Router /history-instalment/{userId} [get]
 func GetHistInstallment(c echo.Context) error {
 	db := config.GetDB()
 

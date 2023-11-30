@@ -11,6 +11,15 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// GetAllLoan Godoc
+// @Summary GetAllLoan
+// @Description GetAllLoan
+// @Tags loan
+// @Accept  json
+// @Produce  json
+// @Param model.Loan body model.Loan true "Loan"
+// @Success 200 {object} model.Loan
+// @Router /all-loan [get]
 func GetAllLoan(c echo.Context) error {
 	db := config.GetDB()
 
@@ -22,6 +31,15 @@ func GetAllLoan(c echo.Context) error {
 	return c.JSON(http.StatusOK, loan)
 }
 
+// GetDetailLoan Godoc
+// @Summary GetDetailLoan
+// @Description GetDetailLoan
+// @Tags loan
+// @Accept  json
+// @Produce  json
+// @Param model.Loan body model.Loan true "Loan"
+// @Success 200 {object} model.Loan
+// @Router /detail-loan/{userId} [get]
 func GetDetailLoan(c echo.Context) error {
 	fmt.Println("GetDetailLoan")
 
@@ -44,6 +62,15 @@ func GetDetailLoan(c echo.Context) error {
 	return c.JSON(http.StatusOK, resp)
 }
 
+// CreateLoan Godoc
+// @Summary Create Loan
+// @Description Create Loan
+// @Tags loan
+// @Accept  json
+// @Produce  json
+// @Param model.Loan body model.Loan true "Loan"
+// @Success 200 {object} model.Loan
+// @Router /create-loan [post]
 func CreateLoan(c echo.Context) error {
 	db := config.GetDB()
 
@@ -67,6 +94,15 @@ func CreateLoan(c echo.Context) error {
 	return c.JSON(http.StatusOK, resp)
 }
 
+// UpdateLoan Godoc
+// @Summary Update Loan
+// @Description Update Loan
+// @Tags loan
+// @Accept  json
+// @Produce  json
+// @Param model.Loan body model.Loan true "Loan"
+// @Success 200 {object} model.Loan
+// @Router /update/{Id} [put]
 func UpdateLoan(c echo.Context) error {
 	log.Println("UpdateLoan")
 	db := config.GetDB()

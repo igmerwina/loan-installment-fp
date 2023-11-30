@@ -5,6 +5,8 @@ import (
 	"goloan/services"
 
 	"github.com/labstack/echo/v4"
+
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func main() {
@@ -21,5 +23,6 @@ func main() {
 
 	cust.GET("/history-instalment:/:userId", services.GetHistInstallment)
 
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.Logger.Fatal(e.Start(":" + env.AppsPort))
 }
