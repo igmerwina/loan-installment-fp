@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"gorm.io/gorm"
 )
 
 // GetAllInstallment retrieves all installments
@@ -60,4 +61,60 @@ func GetHistInstallment(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, resp)
+}
+
+// PayInstallment pay the installment made
+// @Summary PayInstallment
+// @Description Pay the installment made
+// @Tags installment
+// @Accept  json
+// @Produce  json
+// @Param model.Transaction body model.Transaction true "Transaction"
+// @Success 200 {object} model.Transaction
+// @Router /installment [post]
+func PayInstallment(c echo.Context) error {
+	// Parse the JSON request body into an Installment struct
+	var newTransaction model.Transaction
+
+	if err := c.Bind(&newTransaction); err != nil {
+		return err
+	}
+
+	// Get the database instance
+	db := config.GetDB()
+
+	// Call the CreateTransaction function from the model package
+	if err := db.Create(&newTransaction).Error; err != nil {
+		return err
+		// return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to create transaction"})
+	}
+
+	// Update the loan's remaining amount by subtracting the installment's nominal
+	if err := updateRemainingAmount(db, newTransaction.LoanID, newTransaction.Nominal); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to update remaining amount"})
+	}
+
+	return c.JSON(http.StatusCreated, newTransaction)
+}
+
+func updateRemainingAmount(db *gorm.DB, loanID, installmentAmount int64) error {
+	var loan model.Loan
+
+	// Find the loan by ID
+	if err := db.First(&loan, loanID).Error; err != nil {
+		return err
+	}
+
+	fmt.Println("Get success id: ", loan.ID)
+
+	// Subtract the installment amount from the loan's remaining amount
+	loan.RemainInstallment -= installmentAmount
+
+	fmt.Println("Installment: ", loan.RemainInstallment)
+	// Save the updated loan back to the database
+	if err := db.Save(&loan).Error; err != nil {
+		return err
+	}
+
+	return nil
 }

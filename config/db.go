@@ -43,7 +43,10 @@ func Connect() {
 
 	fmt.Println("Sakses konek tu DB\n", psqlInfo)
 
-	db.AutoMigrate(&model.Installment{}, &model.Loan{}, &model.MaxLoan{})
+	db.AutoMigrate(&model.Installment{},
+		&model.Loan{},
+		&model.MaxLoan{},
+		&model.Transaction{})
 }
 
 func GetDB() *gorm.DB {

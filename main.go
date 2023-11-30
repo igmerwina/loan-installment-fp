@@ -23,6 +23,11 @@ func main() {
 
 	cust.GET("/history-instalment:/:userId", services.GetHistInstallment)
 
+	installment := e.Group("/installment")
+
+	installment.POST("/pay", services.PayInstallment)
+	installment.GET("/transaction-hist/:user_id", services.GetAllTransactionsByUserID)
+
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	e.Logger.Fatal(e.Start(":" + env.AppsPort))
 }
