@@ -219,6 +219,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/installment": {
+            "post": {
+                "description": "Pay the installment made",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "installment"
+                ],
+                "summary": "PayInstallment",
+                "parameters": [
+                    {
+                        "description": "Transaction",
+                        "name": "model.Transaction",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.Transaction"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.Transaction"
+                        }
+                    }
+                }
+            }
+        },
         "/update/{Id}": {
             "put": {
                 "description": "Update Loan",
@@ -303,6 +337,26 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "status_loan": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "model.Transaction": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "loan_id": {
+                    "type": "integer"
+                },
+                "nominal": {
+                    "type": "integer"
+                },
+                "payment_at": {
                     "type": "string"
                 },
                 "user_id": {
