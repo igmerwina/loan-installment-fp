@@ -35,6 +35,19 @@ definitions:
       user_id:
         type: integer
     type: object
+  model.Transaction:
+    properties:
+      id:
+        type: integer
+      loan_id:
+        type: integer
+      nominal:
+        type: integer
+      payment_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
@@ -168,6 +181,28 @@ paths:
           schema:
             $ref: '#/definitions/model.Installment'
       summary: GetHistInstallment
+      tags:
+      - installment
+  /installment:
+    post:
+      consumes:
+      - application/json
+      description: Pay the installment made
+      parameters:
+      - description: Transaction
+        in: body
+        name: model.Transaction
+        required: true
+        schema:
+          $ref: '#/definitions/model.Transaction'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.Transaction'
+      summary: PayInstallment
       tags:
       - installment
   /update/{Id}:
