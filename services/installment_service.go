@@ -85,13 +85,26 @@ func PayInstallment(c echo.Context) error {
 
 	// Call the CreateTransaction function from the model package
 	if err := db.Create(&newTransaction).Error; err != nil {
-		return err
-		// return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to create transaction"})
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to create transaction"})
 	}
 
 	// Update the loan's remaining amount by subtracting the installment's nominal
 	if err := updateRemainingAmount(db, newTransaction.LoanID, newTransaction.Nominal); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to update remaining amount"})
+	}
+
+	//add database transaction
+	//jika gagal, rollback semua
+
+	// Retrieve the first installment for the given loan ID
+	var firstInstallment model.Installment
+	if err := db.Where("loan_id = ?", newTransaction.LoanID).Order("payment_at asc").First(&firstInstallment).Error; err != nil {
+		return c.JSON(http.StatusNotFound, map[string]string{"error": "First installment not found"})
+	}
+
+	// Delete the installmentwritten
+	if err := deleteInstallmentByID(firstInstallment.ID); err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to delete installment"})
 	}
 
 	return c.JSON(http.StatusCreated, newTransaction)
@@ -113,6 +126,25 @@ func updateRemainingAmount(db *gorm.DB, loanID, installmentAmount int64) error {
 	fmt.Println("Installment: ", loan.RemainInstallment)
 	// Save the updated loan back to the database
 	if err := db.Save(&loan).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// DeleteInstallmentByID deletes an installment by ID and updates the corresponding loan's remaining amount
+func deleteInstallmentByID(installmentID int64) error {
+	// Get the database instance
+	db := config.GetDB()
+
+	// Find the installment by ID
+	var deletedInstallment model.Installment
+	if err := db.First(&deletedInstallment, installmentID).Error; err != nil {
+		return err
+	}
+
+	// Call the DeleteInstallment function from the model package
+	if err := db.Delete(&deletedInstallment).Error; err != nil {
 		return err
 	}
 

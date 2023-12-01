@@ -21,7 +21,7 @@ func main() {
 	cust.PUT("/update/:Id", services.UpdateLoan)
 	cust.GET("/detail-loan/:userId", services.GetDetailLoan)
 
-	cust.GET("/history-instalment:/:userId", services.GetHistInstallment)
+	cust.GET("/history-instalment/:userId", services.GetHistInstallment)
 
 	installment := e.Group("/installment")
 

@@ -80,9 +80,11 @@ func CreateLoan(c echo.Context) error {
 		return err
 	}
 
-	util.GenerateInstallment(&loan)
-
 	db.Debug().Save(&loan)
+
+	//loan get dari hasil save diatas, bisa ngeget langsungd ari save
+	//gorm.lastinsertid
+	util.GenerateInstallment(&loan)
 
 	resp := model.Response{
 		ResponseCode: config.Success,
